@@ -24,15 +24,15 @@ export default function Home() {
   };
 
   // Toggle Completed Handler
-  const toggleIsCompleted = (todo) => {
-    const updatedTodos = todos.map((t) => {
-      if (t.todo === todo.todo) {
-        return { ...t, isCompleted: !t.isCompleted };
-      }
-      return t;
-    });
-    setTodos(updatedTodos);
-  };
+  // const toggleIsCompleted = (todo) => {
+  //   const updatedTodos = todos.map((t) => {
+  //     if (t.todo === todo.todo) {
+  //       return { ...t, isCompleted: !t.isCompleted };
+  //     }
+  //     return t;
+  //   });
+  //   setTodos(updatedTodos);
+  // };
 
   // Filter Todos based on the selected filter
   const filteredTodos = todos.filter((todo) => {
@@ -46,6 +46,28 @@ export default function Home() {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       addTodoHandler();
+    }
+  };
+  const completedTasksLength = todos.filter((todo) => todo.isCompleted).length;
+
+  const toggleIsCompleted = (incomingTodo) => {
+    let changedTodos = todos.map((t) => {
+      if (t.title === incomingTodo.title) {
+        t.isCompleted = !t.isCompleted;
+      }
+      return t;
+    });
+
+    setTodos(changedTodos);
+  };
+
+  const clearCompletedHandler = () => {
+    if (todos.filter((todo) => todo.isCompleted).length === 0) {
+      alert("There are no completed tasks");
+    } else {
+      const reamainingTodos = todos.filter((todo) => !todo.isCompleted);
+      setTodos([...reamainingTodos]);
+      alert("Are you sure you want to clear all completed tasks?");
     }
   };
 
@@ -100,6 +122,20 @@ export default function Home() {
             </div>
           ))}
         </div>
+        {todos.length > 0 ? (
+          <div className={styles.parag}>
+            <p>
+              {completedTasksLength} of {todos.length} tasks completed
+            </p>
+            <button onClick={() => clearCompletedHandler()}>
+              Clear Completed
+            </button>
+          </div>
+        ) : (
+          <div className={styles.emptyTask}>
+            <p>No tasks yet. Add one above!</p>
+          </div>
+        )}
         <div></div>
       </div>
     </div>

@@ -36,6 +36,7 @@
   width: 30%;
   border-radius: 10px;
   border: none;
+  cursor: pointer;
 }
 .filterButtons button {
   padding: 4px 12px;
@@ -87,10 +88,12 @@
   color: red;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
 }
 .listContChild input {
   width: 20px;
   height: 20px;
   border-radius: 50px;
   background-color: #3c82f6;
+  cursor: pointer;
 }
