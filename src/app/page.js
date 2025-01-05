@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import "./click.css";
 import styles from "./page.module.css";
+import Click from "./click";
 
 export default function Home() {
   const [todos, setTodos] = useState([]);
@@ -16,23 +17,14 @@ export default function Home() {
   };
 
   // Delete Todo Handler
-  const deleteHandler = (index) => {
+  const deleteHandler = (todoToDelete) => {
     if (window.confirm("Are you sure you want to delete this task?")) {
-      const updatedTodos = todos.filter((_, todoIndex) => todoIndex !== index);
+      const updatedTodos = todos.filter(
+        (todo) => todo.todo !== todoToDelete.todo
+      );
       setTodos(updatedTodos);
     }
   };
-
-  // Toggle Completed Handler
-  // const toggleIsCompleted = (todo) => {
-  //   const updatedTodos = todos.map((t) => {
-  //     if (t.todo === todo.todo) {
-  //       return { ...t, isCompleted: !t.isCompleted };
-  //     }
-  //     return t;
-  //   });
-  //   setTodos(updatedTodos);
-  // };
 
   // Filter Todos based on the selected filter
   const filteredTodos = todos.filter((todo) => {
@@ -48,19 +40,20 @@ export default function Home() {
       addTodoHandler();
     }
   };
+
   const completedTasksLength = todos.filter((todo) => todo.isCompleted).length;
 
-  const toggleIsCompleted = (incomingTodo) => {
-    let changedTodos = todos.map((t) => {
-      if (t.title === incomingTodo.title) {
-        t.isCompleted = !t.isCompleted;
-      }
-      return t;
-    });
-
-    setTodos(changedTodos);
+  const toggleIsCompleted = (index, todo) => {
+    const todoIndex = todos.findIndex((t) => t.todo === todo.todo);
+    if (todoIndex !== -1) {
+      const updatedTodos = [...todos];
+      updatedTodos[todoIndex] = {
+        ...updatedTodos[todoIndex],
+        isCompleted: !updatedTodos[todoIndex].isCompleted,
+      };
+      setTodos(updatedTodos);
+    }
   };
-
   const clearCompletedHandler = () => {
     if (todos.filter((todo) => todo.isCompleted).length === 0) {
       alert("There are no completed tasks");
@@ -111,14 +104,14 @@ export default function Home() {
               <div className={styles.listContChild}>
                 <input
                   type="checkbox"
-                  onClick={() => toggleIsCompleted(todo)}
+                  onClick={() => toggleIsCompleted(index, todo)}
                   checked={todo.isCompleted}
                 />
                 <p className={todo.isCompleted ? styles.completed : ""}>
                   {todo.todo}
                 </p>
               </div>
-              <button onClick={() => deleteHandler(index)}>delete</button>
+              <button onClick={() => deleteHandler(todo)}>delete</button>
             </div>
           ))}
         </div>
@@ -136,8 +129,12 @@ export default function Home() {
             <p>No tasks yet. Add one above!</p>
           </div>
         )}
-        <div></div>
+        <div className={styles.bottom}>
+          <p>Powered by</p>
+          <a href="https://github.com/godless-developer">Tukkaa</a>
+        </div>
       </div>
+      <Click />
     </div>
   );
 }
