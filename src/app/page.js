@@ -104,10 +104,10 @@ export default function Home() {
               <div className={styles.listContChild}>
                 <input
                   type="checkbox"
-                  onClick={() => toggleIsCompleted(index, todo)}
+                  onChange={() => toggleIsCompleted(index, todo)}
                   checked={todo.isCompleted}
                 />
-                <p className={todo.isCompleted ? styles.completed : ""}>
+                <p className={todo.isCompleted ? styles.completed : "false"}>
                   {todo.todo}
                 </p>
               </div>
@@ -120,7 +120,10 @@ export default function Home() {
             <p>
               {completedTasksLength} of {todos.length} tasks completed
             </p>
-            <button onClick={() => clearCompletedHandler()}>
+            <button
+              className={styles.buttonB}
+              onClick={() => clearCompletedHandler()}
+            >
               Clear Completed
             </button>
           </div>
